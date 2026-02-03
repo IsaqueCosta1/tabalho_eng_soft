@@ -34,10 +34,13 @@ jobs:
 
     - name: Build Docker image
       run: |
-        docker build -t ghcr.io/${{ github.repository }}:latest \
-                     -t ghcr.io/${{ github.repository }}:${{ github.sha }} .
+        IMAGE_NAME=$(echo "ghcr.io/${{ github.repository }}" | tr '[:upper:]' '[:lower:]')
+        docker build -t $IMAGE_NAME:latest \
+        -t $IMAGE_NAME:${{ github.sha }} .
 
     - name: Push Docker image
-      run: |
-        docker push ghcr.io/${{ github.repository }}:latest
-        docker push ghcr.io/${{ github.repository }}:${{ github.sha }}
+  run: |
+    IMAGE_NAME=$(echo "ghcr.io/${{ github.repository }}" | tr '[:upper:]' '[:lower:]')
+    docker push $IMAGE_NAME:latest
+    docker push $IMAGE_NAME:${{ github.sha }}
+
